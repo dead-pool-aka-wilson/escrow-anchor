@@ -250,7 +250,7 @@ describe("escrow-anchor", () => {
     const tx = await program.methods
       .takeOffer()
       .preInstructions([
-        anchor.web3.ComputeBudgetProgram.setComputeUnitLimit({ units: 200_000 })
+        anchor.web3.ComputeBudgetProgram.setComputeUnitLimit({ units: 400_000 })
       ])
       .accounts({
         escrowState: escrowState,
@@ -267,7 +267,7 @@ describe("escrow-anchor", () => {
         taker: taker,
         fundingAccount: fundingAccount,
         tokenProgram: anchor.utils.token.TOKEN_PROGRAM_ID,
-        associatedProgram: anchor.utils.token.ASSOCIATED_PROGRAM_ID,
+        associatedTokenProgram: anchor.utils.token.ASSOCIATED_PROGRAM_ID,
         systemProgram: anchor.web3.SystemProgram.programId
       })
       .signers([takerKeypair, fundingAccountKeypair])
@@ -287,7 +287,7 @@ describe("escrow-anchor", () => {
         maker: maker,
         fundingAccount: fundingAccount,
         tokenProgram: anchor.utils.token.TOKEN_PROGRAM_ID,
-        associatedProgram: anchor.utils.token.ASSOCIATED_PROGRAM_ID,
+        associatedTokenProgram: anchor.utils.token.ASSOCIATED_PROGRAM_ID,
         systemProgram: anchor.web3.SystemProgram.programId
       })
       .signers([makerKeypair, fundingAccountKeypair])
@@ -306,7 +306,7 @@ describe("escrow-anchor", () => {
         maker: maker,
         fundingAccount: fundingAccount,
         tokenProgram: anchor.utils.token.TOKEN_PROGRAM_ID,
-        associatedProgram: anchor.utils.token.ASSOCIATED_PROGRAM_ID,
+        associatedTokenProgram: anchor.utils.token.ASSOCIATED_PROGRAM_ID,
         systemProgram: anchor.web3.SystemProgram.programId
       })
       .signers([makerKeypair, fundingAccountKeypair])

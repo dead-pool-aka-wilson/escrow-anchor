@@ -3,7 +3,7 @@ use anchor_lang::prelude::*;
 pub const MAX_BPS_VALUE: u16 = 10_000;
 
 #[cfg(not(feature = "localnet"))]
-pub const INITIAL_MANAGER: Pubkey = pubkey!("TH1S1SNoTAVAL1DPUBKEYUSETHE1MPLS1D1NSTEAD11");
+pub const INITIAL_MANAGER: Pubkey = pubkey!("FRAge3TPn2CHnamHeoQx6vyMCzmoy736d2A54Lm7Y4Ei");
 
 #[cfg(feature = "localnet")]
 pub const INITIAL_MANAGER: Pubkey = pubkey!("GRaji5MQuLfPPYX1x9RK8Eb34QzCsawegMjmv3561nAG");

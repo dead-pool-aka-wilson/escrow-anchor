@@ -12,24 +12,24 @@ use anchor_spl::{
 #[derive(Accounts)]
 pub struct TakeOffer<'info> {
     #[account(seeds = [EscrowState::SEED], bump = escrow_state.bump)]
-    pub escrow_state: Account<'info, EscrowState>,
-    #[account(mut, seeds = [Offer::SEED_PREFIX, maker.key().as_ref(), escrow_account.id.to_le_bytes().as_ref()], bump = escrow_account.bump)]
-    pub escrow_account: Account<'info, Offer>,
+    pub escrow_state: Box<Account<'info, EscrowState>>,
+    #[account(mut, seeds = [Offer::SEED_PREFIX, maker.key().as_ref(), escrow_account.id.to_le_bytes().as_ref()], bump = escrow_account.bump, close=funding_account)]
+    pub escrow_account: Box<Account<'info, Offer>>,
     #[account(address = escrow_account.token_mint_a)]
     pub token_a_mint_account: Account<'info, Mint>,
     #[account(address = escrow_account.token_mint_b)]
     pub token_b_mint_account: Account<'info, Mint>,
-    #[account(init_if_needed, payer = funding_account, associated_token::mint = token_b_mint_account, associated_token::authority = maker)]
-    pub maker_token_b_account: Account<'info, TokenAccount>,
-    #[account(init_if_needed, payer = funding_account, associated_token::mint = token_a_mint_account, associated_token::authority = taker)]
-    pub taker_token_a_account: Account<'info, TokenAccount>,
-    #[account(mut, associated_token::mint = token_b_mint_account, associated_token::authority = taker)]
-    pub taker_token_b_account: Account<'info, TokenAccount>,
-    #[account(init_if_needed, payer = funding_account, associated_token::mint = token_a_mint_account, associated_token::authority = escrow_state)]
-    pub escrow_token_a_fee_account: Account<'info, TokenAccount>,
-    #[account(init_if_needed, payer = funding_account, associated_token::mint = token_b_mint_account, associated_token::authority = escrow_state)]
-    pub escrow_token_b_fee_account: Account<'info, TokenAccount>,
-    #[account(mut, associated_token::mint = token_a_mint_account, associated_token::authority = escrow_account)]
+    #[account(init_if_needed, payer = funding_account, associated_token::mint = token_b_mint_account, associated_token::authority = maker, associated_token::token_program = token_program)]
+    pub maker_token_b_account: Box<Account<'info, TokenAccount>>,
+    #[account(init_if_needed, payer = funding_account, associated_token::mint = token_a_mint_account, associated_token::authority = taker, associated_token::token_program = token_program)]
+    pub taker_token_a_account: Box<Account<'info, TokenAccount>>,
+    #[account(mut, associated_token::mint = token_b_mint_account, associated_token::authority = taker, associated_token::token_program = token_program)]
+    pub taker_token_b_account: Box<Account<'info, TokenAccount>>,
+    #[account(init_if_needed, payer = funding_account, associated_token::mint = token_a_mint_account, associated_token::authority = escrow_state, associated_token::token_program = token_program)]
+    pub escrow_token_a_fee_account: Box<Account<'info, TokenAccount>>,
+    #[account(init_if_needed, payer = funding_account, associated_token::mint = token_b_mint_account, associated_token::authority = escrow_state, associated_token::token_program = token_program)]
+    pub escrow_token_b_fee_account: Box<Account<'info, TokenAccount>>,
+    #[account(mut, associated_token::mint = token_a_mint_account, associated_token::authority = escrow_account, associated_token::token_program = token_program)]
     pub escrow_token_a_vault_account: Account<'info, TokenAccount>,
     /// CHECK : address of maker wallet
     #[account(address = escrow_account.maker)]
