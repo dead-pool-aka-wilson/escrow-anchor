@@ -3,7 +3,7 @@ use crate::utils::transfer_token;
 use anchor_lang::prelude::*;
 use anchor_spl::{
     associated_token::AssociatedToken,
-    token::{transfer, Mint, Token, TokenAccount, Transfer},
+    token::{Mint, Token, TokenAccount},
 };
 
 #[derive(AnchorSerialize, AnchorDeserialize, Debug)]

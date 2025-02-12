@@ -1,6 +1,5 @@
 use crate::consts::MAX_BPS_VALUE;
 use crate::errors::EscrowError;
-use crate::instructions::initialize::Initialize;
 use anchor_lang::prelude::*;
 
 #[account]

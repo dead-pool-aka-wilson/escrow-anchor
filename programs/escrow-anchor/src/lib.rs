@@ -8,10 +8,11 @@ pub mod utils;
 
 use crate::instructions::*;
 use crate::instructions::{
-    initialize::InitializeArgs, make_offer::MakeOfferArgs, set_fees::SetFeesArgs,
+    collect_fee::CollectFeeArgs, initialize::InitializeArgs, make_offer::MakeOfferArgs,
+    set_fees::SetFeesArgs,
 };
 
-declare_id!("4feFvLpc3CaHWLsxD954DCL9mjAdSj61jZD85jag8A32");
+declare_id!("2izpriWVFuFivHicKpjJq3F7K8RKTs8qGcsvZBod7gSQ");
 
 #[program]
 pub mod escrow_anchor {
@@ -29,8 +30,8 @@ pub mod escrow_anchor {
         set_manager::handler(ctx)?;
         Ok(())
     }
-    pub fn collect_fee(ctx: Context<CollectFee>) -> Result<()> {
-        msg!("Greetings from: {:?}", ctx.program_id);
+    pub fn collect_fee(ctx: Context<CollectFee>, args: CollectFeeArgs) -> Result<()> {
+        collect_fee::handler(ctx, args)?;
         Ok(())
     }
     pub fn make_offer(ctx: Context<MakeOffer>, args: MakeOfferArgs) -> Result<()> {

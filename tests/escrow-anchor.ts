@@ -326,7 +326,7 @@ describe("escrow-anchor", () => {
 
     // Add your test here.
     const tx = await program.methods
-      .collectFee()
+      .collectFee({ shouldCloseFeeAccount: false })
       .accounts({
         escrowState: escrowState,
         escrowManager: newManager,
@@ -352,7 +352,7 @@ describe("escrow-anchor", () => {
       owner: newManager
     });
     const tx = await program.methods
-      .collectFee()
+      .collectFee({ shouldCloseFeeAccount: true })
       .accounts({
         escrowState: escrowState,
         escrowManager: newManager,

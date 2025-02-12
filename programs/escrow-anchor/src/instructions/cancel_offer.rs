@@ -1,5 +1,5 @@
 use crate::errors::EscrowError;
-use crate::state::{EscrowState, Offer};
+use crate::state::Offer;
 use crate::utils::transfer_token;
 use anchor_lang::prelude::*;
 use anchor_spl::{

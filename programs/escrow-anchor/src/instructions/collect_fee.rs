@@ -34,8 +34,6 @@ pub fn handler(ctx: Context<CollectFee>, args: CollectFeeArgs) -> Result<()> {
         escrow_fee_account,
         manager_token_account,
         token_program,
-        associated_token_program,
-        system_program,
         ..
     } = ctx.accounts;
 

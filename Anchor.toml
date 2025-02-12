@@ -5,13 +5,13 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-escrow_anchor = "4feFvLpc3CaHWLsxD954DCL9mjAdSj61jZD85jag8A32"
+escrow_anchor = "2izpriWVFuFivHicKpjJq3F7K8RKTs8qGcsvZBod7gSQ"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "Localnet"
+cluster = "localnet"
 wallet = "./test_manager.json"
 
 [scripts]
