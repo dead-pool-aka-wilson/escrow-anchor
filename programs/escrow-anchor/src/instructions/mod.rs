@@ -1,11 +1,3 @@
-use crate::instructions::make_offer::MakeOfferArgs;
-use crate::state::*;
-use anchor_lang::prelude::*;
-use anchor_spl::{
-    associated_token::AssociatedToken,
-    token::{Mint, Token, TokenAccount},
-};
-
 pub mod cancel_offer;
 pub mod collect_fee;
 pub mod initialize;

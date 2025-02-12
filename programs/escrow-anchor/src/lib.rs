@@ -1,8 +1,10 @@
 use anchor_lang::prelude::*;
 
 pub mod consts;
+pub mod errors;
 pub mod instructions;
 pub mod state;
+pub mod utils;
 
 use crate::instructions::*;
 use crate::instructions::{
@@ -16,15 +18,15 @@ pub mod escrow_anchor {
     use super::*;
 
     pub fn initialize(ctx: Context<Initialize>, args: InitializeArgs) -> Result<()> {
-        msg!("Greetings from: {:?}", ctx.program_id);
+        initialize::handler(ctx, args)?;
         Ok(())
     }
     pub fn set_fees(ctx: Context<SetFees>, args: SetFeesArgs) -> Result<()> {
-        msg!("Greetings from: {:?}", ctx.program_id);
+        set_fees::handler(ctx, args)?;
         Ok(())
     }
     pub fn set_manager(ctx: Context<SetManager>) -> Result<()> {
-        msg!("Greetings from: {:?}", ctx.program_id);
+        set_manager::handler(ctx)?;
         Ok(())
     }
     pub fn collect_fee(ctx: Context<CollectFee>) -> Result<()> {
@@ -32,15 +34,15 @@ pub mod escrow_anchor {
         Ok(())
     }
     pub fn make_offer(ctx: Context<MakeOffer>, args: MakeOfferArgs) -> Result<()> {
-        msg!("Greetings from: {:?}", ctx.program_id);
+        make_offer::handler(ctx, args)?;
         Ok(())
     }
     pub fn take_offer(ctx: Context<TakeOffer>) -> Result<()> {
-        msg!("Greetings from: {:?}", ctx.program_id);
+        take_offer::handler(ctx)?;
         Ok(())
     }
     pub fn cancel_offer(ctx: Context<CancelOffer>) -> Result<()> {
-        msg!("Greetings from: {:?}", ctx.program_id);
+        cancel_offer::handler(ctx)?;
         Ok(())
     }
 }

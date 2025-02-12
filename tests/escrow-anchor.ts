@@ -14,7 +14,14 @@ describe("escrow-anchor", () => {
     program.programId
   )[0];
 
-  const escrowManagerKeypair = anchor.web3.Keypair.generate();
+  const escrowManagerKeypair = anchor.web3.Keypair.fromSecretKey(
+    Buffer.from([
+      225, 36, 24, 115, 153, 63, 218, 187, 113, 14, 20, 214, 38, 240, 197, 73,
+      225, 49, 209, 116, 135, 218, 130, 216, 200, 199, 123, 63, 46, 156, 175,
+      159, 229, 43, 99, 157, 153, 13, 92, 91, 114, 10, 209, 117, 130, 3, 60,
+      193, 20, 166, 97, 167, 91, 95, 189, 176, 42, 5, 137, 51, 83, 183, 10, 61
+    ])
+  );
   const escrowManager = escrowManagerKeypair.publicKey;
 
   const newManagerKeypair = anchor.web3.Keypair.generate();
@@ -95,7 +102,7 @@ describe("escrow-anchor", () => {
 
   const initializeArgs = { makerFeeBps: 100, takerFeeBps: 100 };
 
-  const setFeesArgs = { makerFeeBps: 100, takerFeeBps: 100 };
+  const setFeesArgs = { makerFeeBps: 200, takerFeeBps: 200 };
 
   const makeOffer1Args = {
     id: new anchor.BN(0),
@@ -164,7 +171,7 @@ describe("escrow-anchor", () => {
       tokenMintA,
       makerTokenAAccount,
       fundingAccountKeypair,
-      1000000000000
+      2000000000000
     );
 
     await token.mintTo(
@@ -242,6 +249,9 @@ describe("escrow-anchor", () => {
   it("take offer", async () => {
     const tx = await program.methods
       .takeOffer()
+      .preInstructions([
+        anchor.web3.ComputeBudgetProgram.setComputeUnitLimit({ units: 200_000 })
+      ])
       .accounts({
         escrowState: escrowState,
         escrowAccount: escrowAccount1,
@@ -255,10 +265,13 @@ describe("escrow-anchor", () => {
         escrowTokenAVaultAccount: escrowTokenAVaultAccount1,
         maker: maker,
         taker: taker,
-        fundingAccount: fundingAccount
+        fundingAccount: fundingAccount,
+        tokenProgram: anchor.utils.token.TOKEN_PROGRAM_ID,
+        associatedProgram: anchor.utils.token.ASSOCIATED_PROGRAM_ID,
+        systemProgram: anchor.web3.SystemProgram.programId
       })
       .signers([takerKeypair, fundingAccountKeypair])
-      .rpc();
+      .rpc({ skipPreflight: true });
     console.log("Your transaction signature", tx);
   });
 
@@ -308,7 +321,7 @@ describe("escrow-anchor", () => {
     });
     const managerTokenAccount = anchor.utils.token.associatedAddress({
       mint: tokenMintA,
-      owner: escrowManager
+      owner: newManager
     });
 
     // Add your test here.
@@ -316,7 +329,7 @@ describe("escrow-anchor", () => {
       .collectFee()
       .accounts({
         escrowState: escrowState,
-        escrowManager: escrowManager,
+        escrowManager: newManager,
         tokenMintAccount: tokenMintA,
         escrowFeeAccount: escrowFeeAccount,
         managerTokenAccount: managerTokenAccount,
@@ -324,8 +337,8 @@ describe("escrow-anchor", () => {
         associatedTokenProgram: anchor.utils.token.ASSOCIATED_PROGRAM_ID,
         systemProgram: anchor.web3.SystemProgram.programId
       })
-      .signers([escrowManagerKeypair])
-      .rpc();
+      .signers([newManagerKeypair])
+      .rpc({ skipPreflight: true });
     console.log("Your transaction signature", tx);
   });
 
@@ -336,13 +349,13 @@ describe("escrow-anchor", () => {
     });
     const managerTokenAccount = anchor.utils.token.associatedAddress({
       mint: tokenMintB,
-      owner: escrowManager
+      owner: newManager
     });
     const tx = await program.methods
       .collectFee()
       .accounts({
         escrowState: escrowState,
-        escrowManager: escrowManager,
+        escrowManager: newManager,
         tokenMintAccount: tokenMintB,
         escrowFeeAccount: escrowFeeAccount,
         managerTokenAccount: managerTokenAccount,
@@ -350,8 +363,8 @@ describe("escrow-anchor", () => {
         associatedTokenProgram: anchor.utils.token.ASSOCIATED_PROGRAM_ID,
         systemProgram: anchor.web3.SystemProgram.programId
       })
-      .signers([escrowManagerKeypair])
-      .rpc();
+      .signers([newManagerKeypair])
+      .rpc({ skipPreflight: true });
     console.log("Your transaction signature", tx);
   });
 });
