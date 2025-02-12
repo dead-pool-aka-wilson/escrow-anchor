@@ -9,6 +9,10 @@ pub struct EscrowState {
     pub bump: u8,
 }
 
+impl EscrowState {
+    pub const SEED: &'static [u8] = b"state";
+}
+
 #[account]
 #[derive(Default, InitSpace)]
 pub struct Offer {

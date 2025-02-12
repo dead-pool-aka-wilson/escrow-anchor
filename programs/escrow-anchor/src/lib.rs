@@ -1,5 +1,6 @@
 use anchor_lang::prelude::*;
 
+pub mod consts;
 pub mod instructions;
 pub mod state;
 
